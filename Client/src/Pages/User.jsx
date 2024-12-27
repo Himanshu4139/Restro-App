@@ -4,10 +4,31 @@ import User_footer from '../Components/User_footer';
 import User_header from '../Components/User_header';
 import { useParams } from 'react-router-dom';
 import User_option from '../Components/User_option';
+import Model from '../Components/Model';
+import UserLogin from '../Auth/UserLogin';
+import UserSignup from '../Auth/UserSignup';
 
 const User = () => {
   const { id } = useParams();
   const [category, setSelectedCategory] = useState('All');
+  const [showModel, setShowModel] = useState(false);
+  const [showModel1, setShowModel1] = useState(false)
+
+  const handleClose = ()=>{
+    setShowModel(false);
+  }
+
+  const handleClose1 = ()=>{
+    setShowModel1(false);
+  }
+
+  const model = <Model onClose={handleClose}>
+    <UserLogin setShowModel={setShowModel} id={id} setShowModel1={setShowModel1} />
+  </Model>
+
+  const model1 = <Model onClose={handleClose1}>
+    <UserSignup id={id} setShowModel={setShowModel1} setShowModel1={setShowModel} />
+  </Model>
 
 
   return (
@@ -23,7 +44,10 @@ const User = () => {
       <div className="w-full flex flex-col flex-wrap pb-14 min-h-screen">
         <User_card id={id} category={category} />
       </div>
-      <User_footer id={id} />
+      <User_footer id={id} setShowModel={setShowModel} showModel={showModel} />
+
+      {showModel && model}
+      {showModel1 && model1}
     </>
   );
 };

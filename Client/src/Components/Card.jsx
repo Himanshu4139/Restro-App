@@ -69,6 +69,7 @@ category === 'All'
             <div className="flex px-3">
               <MdOutlineModeEditOutline className="text-2xl mx-2" onClick={()=>{
                 setCardId(item._id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 setShowModel(true);
               }} />
               <FaTrashAlt className="text-2xl mx-1" onClick={()=>{

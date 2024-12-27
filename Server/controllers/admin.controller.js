@@ -4,6 +4,13 @@ const adminModel = require('../model/admin_model');
 module.exports.registerAdmin = async (req, res, next) => {
     try {
         const { email, password, phoneNo, shopName, image } = req.body;
+        
+        // Check if admin already exists
+        const existingAdmin = await adminModel.findOne({ email });
+        if (existingAdmin) {
+            return res.status(400).json({ message: 'Admin already exists with this email' });
+        }
+
         const hashPassword = await adminModel.hashPassword(password);
         const admin = await adminModel.create({ email, password:hashPassword, phoneNo, shopName, image });
         const token = admin.generateToken();

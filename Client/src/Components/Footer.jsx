@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Footer = ({setShowModel,setShowModel1, setChange}) => {
     const hanldeClick = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setShowModel(true);
     }
     const hanldeClick1 = () => {

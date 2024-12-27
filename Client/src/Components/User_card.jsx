@@ -1,9 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/slices/CartSlice';
 
 const User_card = ({ id, category }) => {
     const [menu, setMenu] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         axios.get(`http://localhost:5000/admin/profile/${id}`)
@@ -32,7 +35,14 @@ const User_card = ({ id, category }) => {
                         </div>
                         <div className='flex flex-col'>
 
-                            <button className='bg-emerald-400 py-2 px-2 font-semibold rounded-md'>ADD CART</button>
+                            <button className='bg-emerald-400 py-2 px-4 font-semibold rounded-md cursor-pointer text-black transition-transform duration-200 hover:bg-emerald-500 active:scale-95 shadow-md' onClick={()=>{
+                                dispatch(addToCart({
+                                    id: item._id, 
+                                    name: item.itemName, 
+                                    price: item.itemPrice, 
+                                    image: item.image, 
+                                }))
+                            }}>ADD CART</button>
 
                         </div>
                     </div>

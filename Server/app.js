@@ -7,6 +7,7 @@ const connectDB = require('./db/db');
 connectDB();
 const adminRoutes = require('./routes/admin.routes');
 const foodRoutes = require('./routes/food.routes');
+const userRoutes = require('./routes/user.routes');
 const { urlencoded } = require('body-parser');
 
 app.use(cors());
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 app.use('/admin', adminRoutes);
 app.use('/admin/food', foodRoutes);
+app.use('/user',userRoutes);
 
 
 module.exports = app;

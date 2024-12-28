@@ -3,10 +3,12 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { saveAs } from 'file-saver';
 import {jwtDecode} from 'jwt-decode';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 const QrCode = () => {
 
     const [value, setValue] = useState('');
+    const [cookies] = useCookies(['token']);
 
     const downloadQRCode = () => {
         const canvas = document.getElementById('qr-gen');
@@ -18,9 +20,8 @@ const QrCode = () => {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const user = jwtDecode(token);
+        if (cookies) {
+            const user = jwtDecode(cookies.token);
             setValue(user.id);
         }
     }, []);

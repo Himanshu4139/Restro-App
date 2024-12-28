@@ -9,7 +9,7 @@ const User_card = ({ id, category }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/admin/profile/${id}`)
+        axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`)
             .then((response) => {
                 setMenu(response.data.admin.menu);
             })

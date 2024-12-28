@@ -40,10 +40,21 @@ const menuSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-    orderDetails: {
-        type: Object,
-        required: true
-    },
+    orderDetails: [{
+        itemName: {
+            type: String,
+            required: true
+        },
+        itemQuantity: {
+            type: Number,
+            required: true,
+            min: 1
+        },
+        itemPrice: {
+            type: Number,
+            required: true
+        }
+    }],
     orderPrice: {
         type: Number,
         required: true

@@ -11,17 +11,18 @@ import User_profile from './Pages/User_profile'
 
 const App = () => {
   const [minus, setMinus] = useState(true)
+  const [changes, setChanges] = useState(false);
   return (
     <>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/profile' element={<Profile setMinus={setMinus} minus={minus}/>} />
         <Route path='/admin' element={<Admin setMinus={setMinus} minus={minus} />} />
-        <Route path='/order' element={<Order />} />
+        <Route path='/order' element={<Order changes={changes} setChanges={setChanges} />} />
         <Route path='/user/:id' element={<User />} />
-        <Route path='/cart/:id' element={<Cart />} />
-        <Route path='/user-order/:id' element={<User_order />} />
-        <Route path='/user-profile/:id' element={<User_profile />} />
+        <Route path='/user/cart/:id' element={<Cart setChanges={setChanges} change={changes} />} />
+        <Route path='/user/user-order/:id' element={<User_order changes={changes} setChanges={setChanges} />} />
+        <Route path='/user/user-profile/:id' element={<User_profile />} />
       </Routes>
     </>
   )

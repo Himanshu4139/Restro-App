@@ -3,13 +3,18 @@ import User_header from '../Components/User_header';
 import Model from '../Components/Model';
 import Payment from '../Components/Payment';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import UserCartCard from '../Components/User_cart_card';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { clearCart } from '../redux/slices/CartSlice';
+import { useCookies } from 'react-cookie';
 
 
-const Cart = () => {
-    const [showModel2, setShowModel2] = useState(false);
+const Cart = ({setChanges, changes}) => {
+
+    const dispatch = useDispatch();
 
     const cartItem = useSelector((state)=> state.cart.cart);
 
@@ -20,19 +25,37 @@ const Cart = () => {
     const totalPrice = cartItem.reduce((total, item)=> {
         return total + item.price*item.quantity;
     },0);
-    
-
-    const handleClick2 = () => {
-        setShowModel2(true);
-    }
-    const handleClose2 = () => {
-        setShowModel2(false);
-    }
-    const model2 = <Model onClose={handleClose2}>
-        <Payment setShowModel2={setShowModel2} />
-    </Model>
 
     const {id} = useParams();
+    const navigate = useNavigate();
+
+    
+    const [cookies] = useCookies(['token']);
+    const decode = jwtDecode(cookies.token);
+    
+
+    const handleClick1 = async () => {
+        try {
+            if(cartItem.length == 0){
+                console.log('cart is empty');
+                return;
+                
+            }
+            
+            const res = await axios.post(`${import.meta.env.VITE_URL}admin/food/addOrder`, {
+                orderItems: cartItem,
+                orderPrice: totalPrice,
+                status: 'inprocess',
+                userId:decode._id,
+                value:id
+            });
+            dispatch(clearCart());
+            setChanges(prevChange => !prevChange); 
+            navigate(`/user/user-order/${id}`);
+        } catch (error) {
+            console.error('Error placing order:', error);
+        }
+    };
 
     return (
         <>
@@ -55,10 +78,9 @@ const Cart = () => {
                     
                 </div>
                 <button className='w-full px-3 py-3 bg-emerald-400 text-xl font-semibold rounded-md mb-2' onClick={()=>{
-                    handleClick2();
+                    handleClick1();
                 }}>Pay Now ₹ {totalPrice}</button>
             </div>
-            {showModel2 && model2}
         </>
     );
 };

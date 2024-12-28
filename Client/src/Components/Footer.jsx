@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,6 +13,7 @@ const Footer = ({setShowModel,setShowModel1, setChange}) => {
     }
 
     const navigate = useNavigate();
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
     
 
   return (
@@ -35,7 +37,7 @@ const Footer = ({setShowModel,setShowModel1, setChange}) => {
             </Link>
             
             <div className='h-12 w-12 rounded-full border-2 border-gray-500 flex justify-center items-center' onClick={() => {
-                    localStorage.removeItem('token');
+                    removeCookie('token', { path: '/' });
                     navigate('/');
                 }
             }>

@@ -96,3 +96,50 @@ module.exports.deleteCategory = async (req, res, next) => {
         res.status(400).json({ message: error.message });
     }
 }
+
+module.exports.addOrder = async (req, res, next) => {
+    try {
+        const { orderItems, orderPrice, status, userId, value } = req.body;
+        const Admin = await adminModel.findOne({_id: value});
+        if(!Admin){
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        const orderDetails = orderItems.map(item => ({
+            itemName: item.name,
+            itemQuantity: item.quantity,
+            itemPrice: item.price
+        }));
+
+        const newOrder = {
+            orderDetails: orderDetails,
+            orderPrice: orderPrice,
+            status: status,
+            userId: userId
+        }
+        Admin.orders.push(newOrder);
+        await Admin.save();
+        res.status(201).json({ message: 'Order added successfully', Admin });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+}
+
+
+module.exports.updateOrder = async (req, res, next) => {
+    try{
+        const id = req.params.id;
+        const { value } = req.body;
+        const Admin = await adminModel.findOne({_id: value});
+        if(!Admin){
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+        const index = Admin.orders.findIndex(order => order._id == id);
+        Admin.orders[index].status='completed';
+        await Admin.save();
+        res.status(201).json({ message: 'Order updated successfully', Admin });
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+}

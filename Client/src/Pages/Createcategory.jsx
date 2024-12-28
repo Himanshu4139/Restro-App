@@ -3,6 +3,7 @@ import BackButton from '../Components/BackButton'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {jwtDecode} from 'jwt-decode';
+import { useCookies } from 'react-cookie';
 
 
 const Createcategory = ({setShowModel, setChange}) => {
@@ -11,38 +12,35 @@ const Createcategory = ({setShowModel, setChange}) => {
     const [file, setFile] = useState('');
     const [value, setValue] = useState('');
 
-    useEffect(()=>{
-        const token = localStorage.getItem('token');
-        const decoded = jwtDecode(token);
-        setValue(decoded.id);
-    },[])
+    const [cookies] = useCookies(['token']);
+    const { id } = jwtDecode(cookies.token);
 
     async function handleUpload(e){
-        const file = e.target.files[0];
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', import.meta.env.VITE_UPLOAD_PRESET);
-        formData.append('cloud_name', import.meta.env.VITE_CLOUD_NAME);
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', import.meta.env.VITE_UPLOAD_PRESET);
+      formData.append('cloud_name', import.meta.env.VITE_CLOUD_NAME);
 
-        try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`, {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            setFile(data.secure_url);
-            
-        } catch (error) {
-            console.error('Error uploading image:', error);
-        }
-    }
+      try {
+          const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`, {
+              method: 'POST',
+              body: formData
+          });
+          const data = await response.json();
+          setFile(data.secure_url);
+          
+      } catch (error) {
+          console.error('Error uploading image:', error);
+      }
+  }
 
     const submitHandle = async(e)=>{
         e.preventDefault();
-        await axios.post('http://localhost:5000/admin/food/addCategory', {
+        await axios.post(`${import.meta.env.VITE_URL}admin/food/addCategory`, {
             name: categoryName,
             image: file,
-            value: value
+            value: id
         })
         .then(res=>{
             setShowModel(false);

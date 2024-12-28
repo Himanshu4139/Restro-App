@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import BackButton from '../Components/BackButton'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Signup = ({ setShowModel, setShowModel1 }) => {
     const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const Signup = ({ setShowModel, setShowModel1 }) => {
     const [number, setNumber] = useState('')
     const [shop, setShop] = useState('')
     const [file, setFile] = useState('')
+    const [cookies, setCookie] = useCookies(['token']);
 
     const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ const Signup = ({ setShowModel, setShowModel1 }) => {
 
     const submitHandle = async (e) => {
         e.preventDefault();
-        await axios.post('http://localhost:5000/admin/register', {
+        await axios.post(`${import.meta.env.VITE_URL}admin/register`, {
             email: email,
             password: password,
             phoneNo: number,
@@ -43,7 +45,7 @@ const Signup = ({ setShowModel, setShowModel1 }) => {
             image: file
         })
             .then(res => {
-                localStorage.setItem('token', res.data.token);
+                setCookie('token',res.data.token,{path: '/'});
                 navigate('/admin');
                 setEmail('');
                 setPassword('');

@@ -6,7 +6,7 @@ const User_option = ({ id, setSelectedCategory }) => {
     const [cat, setcat] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/admin/profile/${id}`)
+        axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`)
             .then((res) => {
                 setcat(res.data.admin.categories);
             })

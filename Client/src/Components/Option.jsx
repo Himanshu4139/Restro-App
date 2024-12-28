@@ -3,16 +3,17 @@ import { FaMinus } from 'react-icons/fa'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { jwtDecode } from 'jwt-decode'
+import { useCookies } from 'react-cookie'
 
 
 const Option = ({change, setSelectedCategory, minus}) => {
 
   const [category, setCategory] = useState([]);
+  const [cookies] = useCookies(['token']);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const { id } = jwtDecode(token);
-    axios.get(`http://localhost:5000/admin/profile/${id}`)
+    const { id } = jwtDecode(cookies.token);
+    axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`)
       .then((response) => {
         setCategory(response.data.admin.categories);
       })
@@ -23,9 +24,9 @@ const Option = ({change, setSelectedCategory, minus}) => {
 
   const handleDelete = async (categoryId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.delete(`http://localhost:5000/admin/food/deleteCategory/${categoryId}`, {
-        params: { value: jwtDecode(token).id },
+      const { id } = jwtDecode(cookies.token);
+      const response = await axios.delete(`${import.meta.env.VITE_URL}admin/food/deleteCategory/${categoryId}`, {
+        params: { value: id },
       });
       setCategory(category.filter((item) => item._id !== categoryId));
     } catch (error) {
@@ -41,11 +42,11 @@ const Option = ({change, setSelectedCategory, minus}) => {
   return (
     <>
       {category.slice().reverse().map((item,index) => (
-        <div key={index} className='relative flex flex-col items-center cursor-pointer my-2' onClick={()=> handleCategoryClick(item.categoryName)}>
+        <div key={index} className='relative flex flex-col items-center cursor-pointer my-2'>
           <div className='relative'>
-            <img className='h-14 w-14 rounded-full border-2 border-gray-300 object-cover' src={item.categoryImage} alt={item.categoryName} />
+            <img className='h-14 w-14 rounded-full border-2 border-gray-300 object-cover' src={item.categoryImage} alt={item.categoryName} onClick={()=> handleCategoryClick(item.categoryName)}/>
           </div>
-          {minus ? <FaMinus className='absolute top-0 right-0 text-black bg-gray-300 rounded-full p-1' onClick={()=>{
+          {minus ? <FaMinus className='absolute top-0 right-0 text-black bg-gray-200 rounded-full p-1' onClick={()=>{
             handleDelete(item._id)
           }}/> : ""}
           

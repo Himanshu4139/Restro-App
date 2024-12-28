@@ -2,23 +2,24 @@ import React, { useContext, useState } from 'react'
 import BackButton from '../Components/BackButton'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 
 const Login = ({setShowModel,setShowModel1}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
+    const [cookies, setCookie] = useCookies(['token']);
 
-    
 
     const navigate = useNavigate();
     const submitHandle = async(e)=>{
         e.preventDefault();
-        await axios.post('http://localhost:5000/admin/login', {
+        await axios.post(`${import.meta.env.VITE_URL}admin/login`, {
             email: email,
             password: password
         }) 
         .then(res=>{
-            localStorage.setItem('token', res.data.token);
+            setCookie('token',res.data.token,{path: '/'});
             navigate('/admin');
         })
         .catch(err=>{

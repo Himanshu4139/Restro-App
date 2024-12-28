@@ -4,17 +4,18 @@ import Header from "../Components/Header";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 
 const Profile = ({setMinus, minus}) => {
 
   const [data, setData] = useState({});
+  const [cookies] = useCookies(['token']);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const user = jwtDecode(token);
-      axios.get(`http://localhost:5000/admin/profile/${user.id}`)
+    if (cookies) {
+      const user = jwtDecode(cookies.token);
+      axios.get(`${import.meta.env.VITE_URL}admin/profile/${user.id}`)
       .then(res=>{
         setData(res.data.admin);
       })
@@ -65,7 +66,7 @@ const Profile = ({setMinus, minus}) => {
 
       {/* Footer Section */}
       <div className="mt-4 text-center py-4 bg-gray-200 text-gray-600 text-sm">
-        © {new Date().getFullYear()} Restro App. All rights reserved.
+        © {new Date().getFullYear()} Restro-App. All rights reserved.
       </div>
     </div>
   );

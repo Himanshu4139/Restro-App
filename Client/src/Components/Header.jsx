@@ -3,17 +3,19 @@ import { Link } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
 import axios from 'axios'
 import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 
 
 const Header = () => {
 
   const [shop, setShop] = useState('');
+  const [cookies] = useCookies(['token']);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const user = jwtDecode(token);
-      axios.get(`http://localhost:5000/admin/profile/${user.id}`)
+    
+    if (cookies.token) {
+      const { id } = jwtDecode(cookies.token);
+      axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`)
       .then(res=>{
         setShop(res.data.admin.shopName);
       })

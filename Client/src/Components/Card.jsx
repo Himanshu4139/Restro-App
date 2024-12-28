@@ -5,21 +5,23 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Model from './Model';
 import Updatemenu from '../Pages/Updatemenu';
+import { useCookies } from 'react-cookie';
 
 
 const Card = ({change,setChange,category}) => {
   const [menuItems, setMenuItems] = useState([]);
   const [showModel, setShowModel] = useState(false);
   const [cardId, setCardId] = useState('');
-  const token = localStorage.getItem('token');
+  const [cookies] = useCookies(['token']);
 
   const handleClose = () => {
     setShowModel(false);
     }
 
+    const { id } = jwtDecode(cookies.token);
   useEffect(() => {
-    const { id } = jwtDecode(token);
-    axios.get(`http://localhost:5000/admin/profile/${id}`)
+    
+    axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`)
       .then((response) => {
         setMenuItems(response.data.admin.menu);
       })
@@ -30,8 +32,8 @@ const Card = ({change,setChange,category}) => {
 
     const handleDelete = async (itemId) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/admin/food/deleteMenu/${itemId}`, {
-        params: { value: jwtDecode(token).id },
+      const response = await axios.delete(`${import.meta.env.VITE_URL}admin/food/deleteMenu/${itemId}`, {
+        params: { value: id },
     });
       setMenuItems(menuItems.filter((item) => item._id !== itemId));
     } catch (error) {

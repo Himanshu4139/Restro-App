@@ -3,6 +3,7 @@ import BackButton from '../Components/BackButton'
 import { useState } from 'react'
 import axios from 'axios'
 import {jwtDecode} from 'jwt-decode';
+import { useCookies } from 'react-cookie';
 
 
 const Createmenu = ({setShowModel, setChange}) => {
@@ -12,13 +13,11 @@ const Createmenu = ({setShowModel, setChange}) => {
     const [image, setImage] = useState('');
     const [value, setValue] = useState('');
     const [adminData, setAdminData] = useState([]);
+    const [cookies] = useCookies(['token']);
+    const { id } = jwtDecode(cookies.token);
 
     useEffect(()=>{
-        const token = localStorage.getItem('token');
-        const decoded = jwtDecode(token);
-        const {id} = jwtDecode(token)
-        setValue(decoded.id);
-        axios.get(`http://localhost:5000/admin/profile/${id}`).
+        axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`).
         then((res)=>{
           setAdminData(res.data.admin);
         })
@@ -50,12 +49,12 @@ const Createmenu = ({setShowModel, setChange}) => {
 
   const submitHandle = async(e)=>{
     e.preventDefault();
-    await axios.post('http://localhost:5000/admin/food/addMenu', {
+    await axios.post(`${import.meta.env.VITE_URL}admin/food/addMenu`, {
         name: itemname,
         price: price,
         category: category,
         image: image,
-        value: value
+        value: id
     })
     .then(res=>{
       setShowModel(false);

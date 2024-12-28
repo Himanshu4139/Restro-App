@@ -2,11 +2,29 @@ import React, { useEffect, useState } from 'react'
 import User_header from '../Components/User_header'
 import { useParams } from 'react-router-dom'
 import User_option from '../Components/User_option'
+import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
+import { useCookies } from 'react-cookie'
 
 const User_profile = () => {
 
 
   const {id} = useParams();
+  const [user, setUser] = useState({});
+  const [cookies] = useCookies(['token']);
+
+  useEffect(()=>{
+    const decode = jwtDecode(cookies.token);
+    axios.get(`${import.meta.env.VITE_URL}user/profile/${decode._id}`)
+    .then((res)=>{
+      
+      setUser(res.data.user);
+    })
+    .catch((err)=>{
+      console.log(err);
+      
+    })
+  },[])
   
 
   return (
@@ -22,8 +40,8 @@ const User_profile = () => {
           />
         </legend>
         <div className="mt-4 flex flex-col items-center">
-          <h2 className="text-3xl font-bold text-white">Username</h2>
-          <p className="text-sm text-white mt-1">user@example.com</p>
+          <h2 className="text-3xl font-bold text-white">{user.name}</h2>
+          <p className="text-sm text-white mt-1">{user.email}</p>
         </div>
       </div>
 
@@ -41,7 +59,7 @@ const User_profile = () => {
 
       {/* Footer Section */}
       <div className="mt-4 text-center py-4 bg-gray-200 text-gray-600 text-sm">
-        © {new Date().getFullYear()} Your Company Name. All rights reserved.
+        © {new Date().getFullYear()} Restro-App. All rights reserved.
       </div>
     </div>
     </>

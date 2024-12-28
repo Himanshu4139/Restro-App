@@ -4,6 +4,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import {jwtDecode} from 'jwt-decode';
 import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 
 
 
@@ -14,14 +15,14 @@ const Updatemenu = ({setShowModel, setChange, itemId}) => {
     const [image, setImage] = useState('');
     const [value, setValue] = useState('');
     const [adminData, setAdminData] = useState([]);
+    const [cookies] = useCookies(['token']);
 
 
     useEffect(()=>{
-      const token = localStorage.getItem('token');
-      const decoded = jwtDecode(token);
-      const {id} = jwtDecode(token)
+      const decoded = jwtDecode(cookies.token);
+      const {id} = jwtDecode(cookies.token)
       setValue(decoded.id);
-      axios.get(`http://localhost:5000/admin/profile/${id}`).
+      axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`).
       then((res)=>{
         setAdminData(res.data.admin);
       })
@@ -52,7 +53,7 @@ const Updatemenu = ({setShowModel, setChange, itemId}) => {
 
     const submitHandle = async(e)=>{
         e.preventDefault();
-        await axios.put(`http://localhost:5000/admin/food/updateMenu/${itemId}`, {
+        await axios.put(`${import.meta.env.VITE_URL}admin/food/updateMenu/${itemId}`, {
             name: itemname,
             price: price,
             category: category,

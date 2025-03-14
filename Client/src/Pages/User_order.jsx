@@ -4,13 +4,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useCookies } from 'react-cookie';
+import { useSelector } from 'react-redux';
 
-const User_order = ({ changes, setChanges }) => {
+const User_order = () => {
     const [activeTab, setActiveTab] = useState('inProcess');
     const [order, setOrder] = useState([]);
     const [cookies] = useCookies(['token']);
     const decode = jwtDecode(cookies.token);
     const { id } = useParams();
+    const changes = useSelector((state) => state.changes.value);
 
     useEffect(() => {
 
@@ -22,7 +24,7 @@ const User_order = ({ changes, setChanges }) => {
             .catch((err) => {
                 console.error(err);
             });
-    }, [id,changes]);
+    }, );
 
     const findNo = order.filter((item) => item.status === 'inprocess');
 

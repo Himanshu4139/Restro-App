@@ -14,17 +14,17 @@ import UserAuth from './Auth/UserAuth'
 
 const App = () => {
   const [minus, setMinus] = useState(true)
-  const [changes, setChanges] = useState(false);
+  // const [changes, setChanges] = useState(false);
   return (
     <>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/profile' element={<AdminAuth><Profile setMinus={setMinus} minus={minus}/></AdminAuth>} />
         <Route path='/admin' element={<AdminAuth><Admin setMinus={setMinus} minus={minus} /></AdminAuth>} />
-        <Route path='/order' element={<AdminAuth><Order changes={changes} setChanges={setChanges} /></AdminAuth>} />
+        <Route path='/order' element={<AdminAuth><Order /></AdminAuth>} />
         <Route path='/user/:id' element={<Auth><User /></Auth>} />
-        <Route path='/user/cart/:id' element={<UserAuth><Cart setChanges={setChanges} change={changes} /></UserAuth>} />
-        <Route path='/user/user-order/:id' element={<UserAuth><User_order changes={changes} setChanges={setChanges} /></UserAuth>} />
+        <Route path='/user/cart/:id' element={<UserAuth><Cart /></UserAuth>} />
+        <Route path='/user/user-order/:id' element={<UserAuth><User_order /></UserAuth>} />
         <Route path='/user/user-profile/:id' element={<UserAuth><User_profile /></UserAuth>} />
       </Routes>
     </>

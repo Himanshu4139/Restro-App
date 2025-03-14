@@ -29,6 +29,8 @@ const Createcategory = ({setShowModel, setChange}) => {
           });
           const data = await response.json();
           setFile(data.secure_url);
+          console.log(data.secure_url);
+          
           
       } catch (error) {
           console.error('Error uploading image:', error);

@@ -9,6 +9,7 @@ const Footer = ({setShowModel,setShowModel1, setChange}) => {
         setShowModel(true);
     }
     const hanldeClick1 = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setShowModel1(true);
     }
 
@@ -22,7 +23,7 @@ const Footer = ({setShowModel,setShowModel1, setChange}) => {
             <Link to={'/profile'} className='h-12 w-12 rounded-full border-2 border-gray-500 flex justify-center items-center'>
                 <i className="fa fa-user text-2xl"></i>
             </Link>
-            <div className='h-12 w-12 rounded-full border-2 border-gray-500 flex justify-center items-center' onClick={() => {
+            <div className='h-12 w-12 rounded-full border-2 border-gray-500 flex justify-center items-center cursor-pointer' onClick={() => {
                   hanldeClick1()
                 }}>
                 <i className="fa fa-qrcode text-3xl"></i>
@@ -36,9 +37,9 @@ const Footer = ({setShowModel,setShowModel1, setChange}) => {
                 <i className="fa-solid fa-kitchen-set text-2xl"></i>
             </Link>
             
-            <div className='h-12 w-12 rounded-full border-2 border-gray-500 flex justify-center items-center' onClick={() => {
-                    removeCookie('token', { path: '/' });
+            <div className='h-12 w-12 rounded-full border-2 border-gray-500 flex justify-center items-center cursor-pointer' onClick={() => {
                     navigate('/');
+                    removeCookie('token', { path: '/' });
                 }
             }>
                 <i className="fa fa-sign-out text-3xl"></i>

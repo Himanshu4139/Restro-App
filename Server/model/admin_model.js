@@ -98,10 +98,6 @@ const adminSchema = new mongoose.Schema({
         required: [true, 'Please enter shop name'],
         trim: true
     },
-    image: {
-        type: String,
-        required: [true, 'Please upload image'],
-    },
     categories: {
         type:[categorySchema],
         default: []

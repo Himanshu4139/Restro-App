@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { MdQrCodeScanner } from 'react-icons/md';
 import QrReader from 'react-qr-reader';
@@ -9,6 +10,7 @@ const Home = () => {
   const [showModel, setShowModel] = useState(false);
   const [showModel1, setShowModel1] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => setShowModel(true);
   const handleClick1 = () => setShowModel1(true);

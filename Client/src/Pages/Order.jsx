@@ -3,12 +3,17 @@ import Header from '../Components/Header';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleChanges } from '../redux/slices/changesSlice';
 
-const Order = ({changes, setChanges}) => {
+const Order = () => {
     const [activeTab, setActiveTab] = useState('inProcess');
     const [order, setOrder] = useState([]);
     const [cookies] = useCookies(['token']);
     const { id } = jwtDecode(cookies.token);
+
+    const dispatch = useDispatch();
+    const changes = useSelector((state) => state.changes.value);
 
 
     useEffect(() => {
@@ -19,7 +24,7 @@ const Order = ({changes, setChanges}) => {
             .catch(err => {
                 console.error(err);
             })
-    }, [id,changes])
+    }, )
 
     const findNo = order.filter((item) => item.status === 'inprocess');
 
@@ -35,7 +40,7 @@ const Order = ({changes, setChanges}) => {
             value:id
         })
         .then((res)=>{
-            setChanges(prevChange => !prevChange);
+            dispatch(toggleChanges());
         })
         .catch(err=>{
             console.error(err);

@@ -3,7 +3,7 @@ const adminModel = require('../model/admin_model');
 
 module.exports.registerAdmin = async (req, res, next) => {
     try {
-        const { email, password, phoneNo, shopName, image } = req.body;
+        const { email, password, phoneNo, shopName } = req.body;
         
         // Check if admin already exists
         const existingAdmin = await adminModel.findOne({ email });
@@ -12,7 +12,7 @@ module.exports.registerAdmin = async (req, res, next) => {
         }
 
         const hashPassword = await adminModel.hashPassword(password);
-        const admin = await adminModel.create({ email, password:hashPassword, phoneNo, shopName, image });
+        const admin = await adminModel.create({ email, password:hashPassword, phoneNo, shopName });
         const token = admin.generateToken();
         res.status(201).json({ message: 'Admin registered successfully', token , admin});
     } catch (error) {

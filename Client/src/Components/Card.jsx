@@ -18,9 +18,8 @@ const Card = ({change,setChange,category}) => {
     setShowModel(false);
     }
 
-    const { id } = jwtDecode(cookies.token);
   useEffect(() => {
-    
+    const { id } = jwtDecode(cookies.token);
     axios.get(`${import.meta.env.VITE_URL}admin/profile/${id}`)
       .then((response) => {
         setMenuItems(response.data.admin.menu);
@@ -32,6 +31,7 @@ const Card = ({change,setChange,category}) => {
 
     const handleDelete = async (itemId) => {
     try {
+      const { id } = jwtDecode(cookies.token);
       const response = await axios.delete(`${import.meta.env.VITE_URL}admin/food/deleteMenu/${itemId}`, {
         params: { value: id },
     });

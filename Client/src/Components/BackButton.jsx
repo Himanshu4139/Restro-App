@@ -6,7 +6,7 @@ function BackButton({ destination ,setShowModel}) {
     <div className='flex'>
         <Link 
             to={destination}
-            className='text-black px-2 py-2 rounded-full w-fit border-2 border-black' onClick={()=>{
+            className='text-white px-2 py-2 rounded-full w-fit border-2 border-white' onClick={()=>{
               setShowModel(false)
             }}>
                 <BsArrowLeft className='text-xl' />

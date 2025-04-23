@@ -11,6 +11,10 @@ const userRoutes = require('./routes/user.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const { urlencoded } = require('body-parser');
 
+// app.use(cors({
+//     origin:'http://localhost:5173',
+//     credentials: true
+// }));  
 app.use(cors());
 app.use(express.json());
 app.use(urlencoded({ extended: true }));

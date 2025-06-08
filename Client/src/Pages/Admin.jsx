@@ -1,30 +1,32 @@
-import React, { useEffect } from 'react'
-// import Header from '../Components/Header'
-// import Footer from '../Components/Footer'
-// import Option from '../Components/Option'
-// import Card from '../Components/Card'
-// import Model from '../Components/Model'
-// import Createmenu from './Createmenu'
-// import Qr_code from './Qr_code'
-import { useState } from 'react'
-// import Createcategory from './Createcategory'
-import Admin1 from './Admin1'
-import Admin2 from './Admin2'
+import React, { useEffect, useState } from 'react';
+import Admin1 from './Admin1';
+import Admin2 from './Admin2';
 
-
-const Admin = ({setMinus, minus}) => {
-    const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 352);
+const Admin = ({ setMinus, minus }) => {
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024);
-    };
+    // Check if window is available (for SSR)
+    if (typeof window !== 'undefined') {
+      const checkScreenSize = () => {
+        // Use consistent breakpoint (1024 in both cases)
+        setIsLargeScreen(window.innerWidth >= 1024);
+      };
+      
+      // Set initial value
+      checkScreenSize();
+      
+      // Add event listener
+      window.addEventListener("resize", checkScreenSize);
+      
+      // Cleanup
+      return () => window.removeEventListener("resize", checkScreenSize);
+    }
+  }, []); // Empty dependency array is fine here since setIsLargeScreen is stable
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return isLargeScreen ?  < Admin2 setMinus={setMinus} minus={minus} /> : <Admin1 setMinus={setMinus} minus={minus} />;
+  return isLargeScreen ? 
+    <Admin2 setMinus={setMinus} minus={minus} /> : 
+    <Admin1 setMinus={setMinus} minus={minus} />;
 }
 
-export default Admin
+export default Admin;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MdQrCodeScanner } from "react-icons/md";
 import { FiLogIn } from "react-icons/fi";
 import QrReader from "react-qr-reader";
@@ -16,6 +17,7 @@ const Home = () => {
   const handleClick1 = () => setShowModel1(true);
   const handleClose = () => setShowModel(false);
   const handleClose1 = () => setShowModel1(false);
+  const navigate = useNavigate();
 
   const scan = () => setShowScanner(true);
 

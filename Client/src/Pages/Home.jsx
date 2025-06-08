@@ -22,7 +22,7 @@ const Home = () => {
   const handleScan = (result) => {
     if (result) {
       setShowScanner(false);
-      // navigate(`/user/${result}`); Uncomment and add navigation logic if needed
+      navigate(`/user/${result}`);
     }
   };
 

@@ -188,7 +188,7 @@ const handleUpdate = async(orderId) =>{
         <div className="p-6 flex items-center justify-between md:justify-start md:space-x-3">
           <div className="flex items-center space-x-4">
             <img
-              src={user.shopThumbnail}
+              src='https://www.freepik.com/free-photos-vectors/restaurant'
               alt="Shop Thumbnail"
               className="h-12 w-12 rounded-full object-cover border-2 border-orange-500"
             />
